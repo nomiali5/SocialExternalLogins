@@ -11,6 +11,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Identity.Web.Models;
+using Twilio;
+using System.Configuration;
 
 namespace Identity.Web
 {
@@ -27,6 +29,12 @@ namespace Identity.Web
     {
         public Task SendAsync(IdentityMessage message)
         {
+            var Twilio = new TwilioRestClient(
+                ConfigurationManager.AppSettings["TwilioSid"],
+                ConfigurationManager.AppSettings["TwilioToken"]);
+            var result = Twilio.SendMessage(
+                "+971553040173",
+                message.Destination, message.Body);
             // Plug in your SMS service here to send a text message.
             return Task.FromResult(0);
         }
